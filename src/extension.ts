@@ -3,22 +3,26 @@
 import * as vscode from "vscode";
 import { ResourcesManager } from "./gresources/resources_manager";
 import { PythonTemplateLinkProvider } from "./gresources/gresource_link_provider";
+import { PythonDebugTracker } from "./python/debugger";
 
 class Extension {
   private readonly context: vscode.ExtensionContext;
   private readonly pythonLinkProvider: PythonTemplateLinkProvider;
   private readonly resourceManager: ResourcesManager;
+  private readonly pythonDebugTracker: PythonDebugTracker;
 
   constructor(context: vscode.ExtensionContext) {
     this.resourceManager = new ResourcesManager(context);
     this.pythonLinkProvider = new PythonTemplateLinkProvider(
       this.resourceManager
     );
+    this.pythonDebugTracker = new PythonDebugTracker();
     this.context = context;
   }
 
   async activate(): Promise<void> {
     this.pythonLinkProvider.register(this.context);
+    this.pythonDebugTracker.register(this.context);
   }
 
   async deactivate(): Promise<void> {}
