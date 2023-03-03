@@ -13,6 +13,17 @@
     "onLanguage:python",
     "workspaceContains:**/*.gresource.xml"
   ],
+  "contributes": {
+    "configuration": {
+      "title": "Gnome Magic",
+      "properties": {
+        "gnome-magic.indexResources": {
+          "type": "boolean",
+          "default": true
+        }
+      }
+    }
+  },
   "main": "./out/extension.js",
   "scripts": {
     "vscode:prepublish": "pnpm run compile",

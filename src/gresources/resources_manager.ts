@@ -5,14 +5,14 @@ import * as path from "path";
 import { ObjectMap } from "../helpers";
 import { TextDecoder } from "util";
 export class ResourcesManager {
-  private _watcher: vscode.FileSystemWatcher;
   private static _resources: ObjectMap<vscode.Uri> = {};
+  private readonly _settings = vscode.workspace.getConfiguration("gnome-magic");
 
-  constructor(context: vscode.ExtensionContext) {
-    this._watcher =
+  register(context: vscode.ExtensionContext) {
+    const _watcher =
       vscode.workspace.createFileSystemWatcher("**/*.gresource.xml");
-    context.subscriptions.push(this._watcher);
-    context.subscriptions.push(this._watcher.onDidChange(this.onDidChange));
+    context.subscriptions.push(_watcher);
+    context.subscriptions.push(_watcher.onDidChange(this.onDidChange));
     vscode.workspace
       .findFiles("**/*.gresource.xml")
       .then((uris) => uris.forEach(async (uri) => this.onDidChange(uri)));
@@ -20,7 +20,7 @@ export class ResourcesManager {
   onDidChange = async (uri: vscode.Uri) => {
     const xmlFilePath = uri.fsPath;
     const fileBytes = await vscode.workspace.fs.readFile(uri);
-    const content = new TextDecoder().decode(fileBytes)
+    const content = new TextDecoder().decode(fileBytes);
     if (XMLValidator.validate(content) === true) {
       const parser = new XMLParser({
         parseAttributeValue: true,
@@ -39,7 +39,9 @@ export class ResourcesManager {
             if (fsPath.endsWith(".ui") && !fsSync.existsSync(fsPath)) {
               fsPath = fsPath.replace(".ui", ".blp");
             }
-            ResourcesManager._resources[virtualPath] =vscode.Uri.parse("file://" + fsPath)
+            ResourcesManager._resources[virtualPath] = vscode.Uri.parse(
+              "file://" + fsPath
+            );
           }
         }
       }
@@ -47,6 +49,7 @@ export class ResourcesManager {
   };
 
   public async getResource(item: string): Promise<vscode.Uri | undefined> {
+    if (!this._settings.get("indexResources")) return;
     if (!Object.keys(ResourcesManager._resources).includes(item)) {
       let res = await vscode.workspace.findFiles("**/*.gresource.xml");
       for (let file of res) await this.onDidChange(file);

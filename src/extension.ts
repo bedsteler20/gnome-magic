@@ -10,9 +10,10 @@ class Extension {
   private readonly pythonLinkProvider: PythonTemplateLinkProvider;
   private readonly resourceManager: ResourcesManager;
   private readonly pythonDebugTracker: PythonDebugTracker;
+  private readonly settings = vscode.workspace.getConfiguration("gnome-magic");
 
   constructor(context: vscode.ExtensionContext) {
-    this.resourceManager = new ResourcesManager(context);
+    this.resourceManager = new ResourcesManager();
     this.pythonLinkProvider = new PythonTemplateLinkProvider(
       this.resourceManager
     );
@@ -21,7 +22,10 @@ class Extension {
   }
 
   async activate(): Promise<void> {
-    this.pythonLinkProvider.register(this.context);
+    if (this.settings.get("indexResources")) {
+      this.resourceManager.register(this.context);
+      this.pythonLinkProvider.register(this.context);
+    }
     this.pythonDebugTracker.register(this.context);
   }
 
