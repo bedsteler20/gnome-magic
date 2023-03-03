@@ -22,7 +22,27 @@
           "default": true
         }
       }
-    }
+    },
+    "languages": [
+      {
+        "id": "blueprint-gtk",
+        "aliases": [
+          "Blueprint",
+          "blp"
+        ],
+        "extensions": [
+          ".blp"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "blueprint-gtk",
+        "scopeName": "source.blueprint-gtk",
+        "path": "./syntaxes/blueprint.tmGrammar.json"
+      }
+    ]
   },
   "main": "./out/extension.js",
   "scripts": {
@@ -47,6 +67,10 @@
     "typescript": "^4.9.4"
   },
   "dependencies": {
-    "fast-xml-parser": "^4.1.2"
+    "@daiyam/balanced-pairs": "^0.1.1",
+    "@types/js-beautify": "^1.13.3",
+    "fast-xml-parser": "^4.1.2",
+    "js-beautify": "^1.14.7",
+    "vscode-languageclient": "^8.0.1"
   }
 }
