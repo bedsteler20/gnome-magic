@@ -20,6 +20,10 @@
         "gnome-magic.indexResources": {
           "type": "boolean",
           "default": true
+        },
+        "gnome-magic.useWorkspaceBlueprintLsp": {
+          "type": "boolean",
+          "default": true
         }
       }
     },
