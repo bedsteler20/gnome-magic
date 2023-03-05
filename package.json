@@ -17,10 +17,6 @@
     "configuration": {
       "title": "Gnome Magic",
       "properties": {
-        "gnome-magic.indexResources": {
-          "type": "boolean",
-          "default": true
-        },
         "gnome-magic.useWorkspaceBlueprintLsp": {
           "type": "boolean",
           "default": true
@@ -50,15 +46,16 @@
   },
   "main": "./out/extension.js",
   "scripts": {
-    "vscode:prepublish": "pnpm run compile",
+    "vscode:prepublish": "npm run compile",
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
-    "pretest": "pnpm run compile && pnpm run lint",
+    "pretest": "npm run compile && npm run lint",
     "lint": "eslint src --ext ts",
     "test": "node ./out/test/runTest.js"
   },
   "devDependencies": {
     "@types/glob": "^8.0.1",
+    "@types/js-beautify": "^1.13.3",
     "@types/mocha": "^10.0.1",
     "@types/node": "16.x",
     "@types/vscode": "^1.75.0",
@@ -71,8 +68,6 @@
     "typescript": "^4.9.4"
   },
   "dependencies": {
-    "@daiyam/balanced-pairs": "^0.1.1",
-    "@types/js-beautify": "^1.13.3",
     "fast-xml-parser": "^4.1.2",
     "js-beautify": "^1.14.7",
     "vscode-languageclient": "^8.0.1"

@@ -48,8 +48,10 @@ export class ResourcesManager {
     }
   };
 
-  public async getResource(item: string): Promise<vscode.Uri | undefined> {
-    if (!this._settings.get("indexResources")) return;
+  public async getResource(
+    item: string | undefined
+  ): Promise<vscode.Uri | undefined> {
+    if (item === undefined || item === null) return;
     if (!Object.keys(ResourcesManager._resources).includes(item)) {
       let res = await vscode.workspace.findFiles("**/*.gresource.xml");
       for (let file of res) await this.onDidChange(file);

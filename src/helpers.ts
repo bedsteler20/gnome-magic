@@ -23,3 +23,14 @@ export const command = (cmd: string) =>
       return resolve(out);
     });
   });
+
+export  function getGtkTemplates(str: string): string | undefined {
+    const regex =
+      /@Gtk\.Template[\(\s*resource_path\s*=\s*['|"](.*)['|"]\s*\)|\.from_resource\(['|"](.*)['|"]\)]*/gm;
+    let m;
+    while ((m = regex.exec(str)) !== null) {
+      if (m.index === regex.lastIndex) regex.lastIndex++;
+      return m[1] ?? m[2]
+    }
+  }
+  

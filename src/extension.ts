@@ -2,37 +2,32 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from "vscode";
 import { ResourcesManager } from "./gresources/resources_manager";
-import { PythonTemplateLinkProvider } from "./gresources/gresource_link_provider";
-import { PythonDebugTracker } from "./python/debugger";
 import { BlueprintLanguageClient } from "./blueprint/lsp";
 import { BlueprintFormattingEditProvider as BlueprintFormatter } from "./blueprint/formater";
+import { PythonLanguagePlugin } from "./python";
 
 class Extension {
   private readonly context: vscode.ExtensionContext;
-  private readonly pythonLinkProvider: PythonTemplateLinkProvider;
   private readonly resourceManager: ResourcesManager;
-  private readonly pythonDebugTracker: PythonDebugTracker;
   private readonly settings = vscode.workspace.getConfiguration("gnome-magic");
-  private readonly blueprintLsp:BlueprintLanguageClient;
+  private readonly blueprintLsp: BlueprintLanguageClient;
   private readonly blueprintFormatter: BlueprintFormatter;
+  private readonly pythonReferenceProvider: PythonLanguagePlugin;
 
   constructor(context: vscode.ExtensionContext) {
     this.resourceManager = new ResourcesManager();
-    this.pythonLinkProvider = new PythonTemplateLinkProvider(
+
+    this.pythonReferenceProvider = new PythonLanguagePlugin(
       this.resourceManager
     );
-    this.pythonDebugTracker = new PythonDebugTracker();
     this.blueprintLsp = new BlueprintLanguageClient();
     this.blueprintFormatter = new BlueprintFormatter();
     this.context = context;
   }
 
   async activate(): Promise<void> {
-    if (this.settings.get("indexResources")) {
-      this.resourceManager.register(this.context);
-      this.pythonLinkProvider.register(this.context);
-    }
-    this.pythonDebugTracker.register(this.context);
+    this.resourceManager.register(this.context);
+    this.pythonReferenceProvider.register(this.context);
     this.blueprintLsp.start();
     this.blueprintFormatter.register(this.context);
   }
