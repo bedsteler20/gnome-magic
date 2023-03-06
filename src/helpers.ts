@@ -25,14 +25,16 @@ export const command = (cmd: string) =>
     });
   });
 
-export function getGtkTemplates(str: string): string | undefined {
+export function getGtkTemplates(str: string): string[] {
   const regex =
     /@Gtk\.Template[\(\s*resource_path\s*=\s*['|"](.*)['|"]\s*\)|\.from_resource\(['|"](.*)['|"]\)]*/gm;
   let m;
+  let r:string[] = []
   while ((m = regex.exec(str)) !== null) {
     if (m.index === regex.lastIndex) regex.lastIndex++;
-    return m[1] ?? m[2];
+    r.push(m[1] ?? m[2]);
   }
+  return r;
 }
 
 declare global {

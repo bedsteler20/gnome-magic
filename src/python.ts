@@ -53,7 +53,7 @@ export class PythonLanguagePlugin {
       const docText = document.getText();
 
       if (declarationRx.test(docText)) {
-        const res_path = getGtkTemplates(docText);
+        const [res_path] = getGtkTemplates(docText);
         if (!res_path) return;
         const uri = await ResourcesManager.getResource(res_path);
         if (!uri) return;
@@ -99,7 +99,7 @@ export class PythonLanguagePlugin {
       const links: vscode.DocumentLink[] = [];
       for (let i = 0; i < document.lineCount; i++) {
         const { text, lineNumber } = document.lineAt(i);
-        const file = getGtkTemplates(text);
+        const [file] = getGtkTemplates(text);
         const filePath = await ResourcesManager.getResource(file);
         if (!filePath || !file) continue;
         const ind = text.indexOf(file);

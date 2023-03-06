@@ -1,7 +1,6 @@
 import * as vscode from "vscode";
 import "./helpers";
-const BLUEPRINT_DASH_ESCAPE =
-  "$7ce02ad5_1379_4f28-99df_f6dc2bf9e534$";
+const BLUEPRINT_DASH_ESCAPE = "$7ce02ad5_1379_4f28-99df_f6dc2bf9e534$";
 
 export class BlueprintLanguagePlugin {
   readonly language = "blueprint-gtk";
@@ -11,9 +10,20 @@ export class BlueprintLanguagePlugin {
       vscode.languages.registerDocumentFormattingEditProvider(
         this.language,
         this.formatter
+      ),
+      vscode.languages.
+      vscode.languages.registerCodeActionsProvider(
+        this.language,
+        this.codeActionProvider
       )
     );
   }
+
+  codeActionProvider: vscode.CodeActionProvider = {
+    provideCodeActions: (document, range, context, token) => {
+      return new vscode.CodeAction("", vscode.CodeActionKind.)
+    },
+  };
 
   formatter: vscode.DocumentFormattingEditProvider = {
     provideDocumentFormattingEdits: (document, options) => {

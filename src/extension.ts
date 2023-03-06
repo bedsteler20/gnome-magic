@@ -8,9 +8,9 @@ import { SymbolManager } from "./symbol_manager";
 
 export async function activate(context: vscode.ExtensionContext) {
   new ResourcesManager(context);
+  new SymbolManager(context);
   new PythonLanguagePlugin(context);
   new BlueprintLanguagePlugin(context);
-  new SymbolManager(context);
 }
 
 // This method is called when your extension is deactivated
