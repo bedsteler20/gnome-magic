@@ -14,35 +14,7 @@
     "workspaceContains:**/*.gresource.xml"
   ],
   "contributes": {
-    "configuration": {
-      "title": "Gnome Magic",
-      "properties": {
-        "gnome-magic.useWorkspaceBlueprintLsp": {
-          "type": "boolean",
-          "default": true
-        }
-      }
-    },
-    "languages": [
-      {
-        "id": "blueprint-gtk",
-        "aliases": [
-          "Blueprint",
-          "blp"
-        ],
-        "extensions": [
-          ".blp"
-        ],
-        "configuration": "./language-configuration.json"
-      }
-    ],
-    "grammars": [
-      {
-        "language": "blueprint-gtk",
-        "scopeName": "source.blueprint-gtk",
-        "path": "./syntaxes/blueprint.tmGrammar.json"
-      }
-    ]
+    
   },
   "main": "./out/extension.js",
   "scripts": {
@@ -69,7 +41,6 @@
   },
   "dependencies": {
     "fast-xml-parser": "^4.1.2",
-    "js-beautify": "^1.14.7",
-    "vscode-languageclient": "^8.0.1"
+    "js-beautify": "^1.14.7"
   }
 }

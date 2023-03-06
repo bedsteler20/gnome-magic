@@ -8,16 +8,16 @@ export class ResourcesManager {
   private static _resources: ObjectMap<vscode.Uri> = {};
   private readonly _settings = vscode.workspace.getConfiguration("gnome-magic");
 
-  register(context: vscode.ExtensionContext) {
+  constructor(context: vscode.ExtensionContext) {
     const _watcher =
       vscode.workspace.createFileSystemWatcher("**/*.gresource.xml");
     context.subscriptions.push(_watcher);
-    context.subscriptions.push(_watcher.onDidChange(this.onDidChange));
+    context.subscriptions.push(_watcher.onDidChange(ResourcesManager.onDidChange));
     vscode.workspace
       .findFiles("**/*.gresource.xml")
-      .then((uris) => uris.forEach(async (uri) => this.onDidChange(uri)));
+      .then((uris) => uris.forEach(async (uri) => ResourcesManager.onDidChange(uri)));
   }
-  onDidChange = async (uri: vscode.Uri) => {
+  static onDidChange = async (uri: vscode.Uri) => {
     const xmlFilePath = uri.fsPath;
     const fileBytes = await vscode.workspace.fs.readFile(uri);
     const content = new TextDecoder().decode(fileBytes);
@@ -48,7 +48,7 @@ export class ResourcesManager {
     }
   };
 
-  public async getResource(
+   public static async getResource(
     item: string | undefined
   ): Promise<vscode.Uri | undefined> {
     if (item === undefined || item === null) return;

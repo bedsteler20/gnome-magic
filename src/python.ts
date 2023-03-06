@@ -4,15 +4,9 @@ import { ResourcesManager } from "./gresources/resources_manager";
 import { command, getGtkTemplates } from "./helpers";
 
 export class PythonLanguagePlugin {
-  private _resourceManager: ResourcesManager;
-
   readonly selector = "python";
 
-  constructor(resourceManager: ResourcesManager) {
-    this._resourceManager = resourceManager;
-  }
-
-  register(context: vscode.ExtensionContext): void {
+  constructor(context: vscode.ExtensionContext){
     context.subscriptions.push(
       vscode.languages.registerCodeActionsProvider(
         this.selector,
@@ -61,7 +55,7 @@ export class PythonLanguagePlugin {
       if (declarationRx.test(docText)) {
         const res_path = getGtkTemplates(docText);
         if (!res_path) return;
-        const uri = await this._resourceManager.getResource(res_path);
+        const uri = await ResourcesManager.getResource(res_path);
         if (!uri) return;
         const fileBytes = await vscode.workspace.fs.readFile(uri);
         const blpFileContent = new TextDecoder().decode(fileBytes);
@@ -106,7 +100,7 @@ export class PythonLanguagePlugin {
       for (let i = 0; i < document.lineCount; i++) {
         const { text, lineNumber } = document.lineAt(i);
         const file = getGtkTemplates(text);
-        const filePath = await this._resourceManager.getResource(file);
+        const filePath = await ResourcesManager.getResource(file);
         if (!filePath || !file) continue;
         const ind = text.indexOf(file);
         links.push({
