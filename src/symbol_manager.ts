@@ -5,11 +5,11 @@ import { getGtkTemplates, ObjectMap } from "./helpers";
 import "./helpers";
 
 export class SymbolManager {
-    static associations = new Map<string, string>();
-    static pythonSymbols = new Map<string, GSymbol[]>();
-    static blueprintSymbols = new Map<string, GSymbol[]>();
+  static associations = new Map<string, string>();
+  static pythonSymbols = new Map<string, GSymbol[]>();
+  static blueprintSymbols = new Map<string, GSymbol[]>();
 
-    constructor(context: vscode.ExtensionContext) {
+  constructor(context: vscode.ExtensionContext) {
     const pythonFileWatcher =
       vscode.workspace.createFileSystemWatcher("**/*.py");
     pythonFileWatcher.onDidChange(this.indexPythonFile);
@@ -53,75 +53,92 @@ export class SymbolManager {
       ...getBlueprintFuncs(content),
     ]);
   }
+
+  static getBlueprintFile(pyFile: string): string | undefined {
+    for (const [blp, py] of SymbolManager.associations.entries()) {
+      if (py === pyFile) return blp;
+    }
+  }
 }
 
-function getBlueprintChildren(str: string) {
+export function getBlueprintChildren(str: string) {
   const regex = /([\w.]+)\s*([_\w]+)?\s*{/gm;
   const r: GSymbol[] = [];
   let m;
   while ((m = regex.exec(str)) !== null) {
     if (m.index === regex.lastIndex) regex.lastIndex++;
+    const line = str.lineNumberAt(m.index);
+
     if (m[1] && m[2]) {
       r.push({
         type: GSymbolType.child,
         name: m[2],
         typeHint: m[1].includes(".") ? m[1] : m[1].insert(0, "Gtk."),
+        range: new vscode.Range(line!, 0, line!, 0 + m[2].length),
       });
     }
   }
   return r;
 }
 
-function getBlueprintFuncs(str: string): GSymbol[] {
+export function getBlueprintFuncs(str: string): GSymbol[] {
   const regex = /[_-\w]+\s*=>\s*([\w_]+)\(\s*\)/gm;
   let r: GSymbol[] = [];
   let m;
   while ((m = regex.exec(str)) !== null) {
     if (m.index === regex.lastIndex) regex.lastIndex++;
+    const line = str.lineNumberAt(m.index);
+
     r.push({
       type: GSymbolType.func,
       name: m[1],
+      range: new vscode.Range(line!, 0, line!, 0 + m[1].length),
     });
   }
   return r;
 }
 
-function getPythonChildren(str: string): GSymbol[] {
+export function getPythonChildren(str: string): GSymbol[] {
   const regex =
     /([_a-zA-Z]+)\s*:?\s*([a-zA-Z.]+)?\s*=\s*Gtk\.Template\.Child\(\s*\)/gm;
   const r: GSymbol[] = [];
   let m;
   while ((m = regex.exec(str)) !== null) {
     if (m.index === regex.lastIndex) regex.lastIndex++;
+    const line = str.lineNumberAt(m.index);
     r.push({
       type: GSymbolType.child,
       name: m[1],
       typeHint: m[2],
+      range: new vscode.Range(line!, 0, line!, 0 + m[1].length),
     });
   }
   return r;
 }
-function getPythonFuncs(str: string): GSymbol[] {
+export function getPythonFuncs(str: string): GSymbol[] {
   const regex = /@Gtk\.Template\.Callback\(\s*\)\s*\n\s*def\s*(\w+)/g;
   let r: GSymbol[] = [];
   let m;
   while ((m = regex.exec(str)) !== null) {
     if (m.index === regex.lastIndex) regex.lastIndex++;
+    const line = str.lineNumberAt(m.index);
     r.push({
       type: GSymbolType.func,
       name: m[1],
+      range: new vscode.Range(line!, 0, line!, 0 + m[1].length),
     });
   }
   return r;
 }
 
-enum GSymbolType {
+export enum GSymbolType {
   child = 0,
   func = 1,
 }
 
-interface GSymbol {
+export interface GSymbol {
   type: GSymbolType;
   name: string;
   typeHint?: string | undefined | null;
+  range: vscode.Range;
 }

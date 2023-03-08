@@ -1,12 +1,13 @@
 import { TextDecoder } from "util";
 import * as vscode from "vscode";
 import { ResourcesManager } from "./gresources/resources_manager";
-import { command, getGtkTemplates } from "./helpers";
-
+import { command, getGtkTemplates, ObjectMap } from "./helpers";
+import { getPythonChildren, GSymbol, SymbolManager } from "./symbol_manager";
+import "./helpers";
 export class PythonLanguagePlugin {
   readonly selector = "python";
 
-  constructor(context: vscode.ExtensionContext){
+  constructor(context: vscode.ExtensionContext) {
     context.subscriptions.push(
       vscode.languages.registerCodeActionsProvider(
         this.selector,
@@ -25,6 +26,11 @@ export class PythonLanguagePlugin {
         this.gresourceLinkProvider
       )
     );
+    Object.keys(this.commands).forEach((key) => {
+      context.subscriptions.push(
+        vscode.commands.registerCommand(key, this.commands[key], this)
+      );
+    });
   }
 
   flatpakDebugAdapter: vscode.DebugAdapterTrackerFactory = {
@@ -79,18 +85,38 @@ export class PythonLanguagePlugin {
     },
   };
 
+  commands: ObjectMap<(...args: any[]) => any> = {
+    "gnome-magic.codeAction.goToBlp": async (file: string, symbol: GSymbol) => {
+      const blpPath = SymbolManager.getBlueprintFile(file);
+      const doc = await vscode.workspace.openTextDocument(
+        vscode.Uri.parse(blpPath!)
+      );
+      const textEditor = await vscode.window.showTextDocument(doc);
+      // const position = doc.lineAt(symbol.range.start.line);
+      // textEditor.revealRange(position.range);
+    },
+  };
+
   codeActionsProvider: vscode.CodeActionProvider = {
     provideCodeActions: (document, range, context, token) => {
+      const actions: vscode.Command[] = [];
       if (!range.isSingleLine) return;
+      const prevLine = document.lineAt(range.start.line - 1).text;
       const line = document.lineAt(range.start.line).text;
-      if (line.includes("Gtk.Template.Child()")) {
-        return [new vscode.CodeAction("Go to blueprint")];
-      }
-      return;
-    },
 
-    resolveCodeAction: (codeAction, token) => {
-      throw new Error("Method not implemented.");
+      if (
+        line.includes("Gtk.Template.Child()") ||
+        prevLine.includes("Gtk.Template.Callback()") ||
+        line.includes("Gtk.Template.Callback()")
+      ) {
+        actions.push({
+          title: "Got to blueprint",
+          command: "gnome-magic.codeAction.goToBlp",
+          arguments: [document.uri.fsPath, getPythonChildren(line)[0]],
+        });
+      }
+
+      return actions;
     },
   };
 

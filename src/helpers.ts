@@ -29,7 +29,7 @@ export function getGtkTemplates(str: string): string[] {
   const regex =
     /@Gtk\.Template[\(\s*resource_path\s*=\s*['|"](.*)['|"]\s*\)|\.from_resource\(['|"](.*)['|"]\)]*/gm;
   let m;
-  let r:string[] = []
+  let r: string[] = [];
   while ((m = regex.exec(str)) !== null) {
     if (m.index === regex.lastIndex) regex.lastIndex++;
     r.push(m[1] ?? m[2]);
@@ -42,6 +42,7 @@ declare global {
     insert(index: number, str: string): string;
     insertAfter(expression: RegExp, str: string, movePointer?: number): string;
     jsBeautify(options?: js_beautify.JSBeautifyOptions | undefined): string;
+    lineNumberAt(index: number): number | null;
   }
 }
 
@@ -70,4 +71,8 @@ String.prototype.insertAfter = function (expression, str, movePointer) {
 };
 String.prototype.jsBeautify = function (options) {
   return js_beautify(this.valueOf(), options);
+};
+
+String.prototype.lineNumberAt = function (index) {
+  return this.substring(0, index).split("\n").length;
 };

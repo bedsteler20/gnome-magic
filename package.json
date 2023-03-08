@@ -14,7 +14,11 @@
     "workspaceContains:**/*.gresource.xml"
   ],
   "contributes": {
-    
+    "commands": [{
+      "command": "gnome-magic.codeAction.goToBlp",
+      "title": "gnome-magic.codeAction.goToBlp",
+      "enablement": "false"
+    }]
   },
   "main": "./out/extension.js",
   "scripts": {
