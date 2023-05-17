@@ -5,12 +5,14 @@ import { BlueprintLanguagePlugin } from "./blueprint";
 import { ResourcesManager } from "./gresources/resources_manager";
 import { PythonLanguagePlugin } from "./python";
 import { SymbolManager } from "./symbol_manager";
+import { templates } from "./templates";
 
 export async function activate(context: vscode.ExtensionContext) {
   new ResourcesManager(context);
   new SymbolManager(context);
   new PythonLanguagePlugin(context);
   new BlueprintLanguagePlugin(context);
+  templates.register(context);
 }
 
 // This method is called when your extension is deactivated

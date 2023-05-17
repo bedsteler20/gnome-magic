@@ -18,14 +18,22 @@
     "workspaceContains:**/*.gresource.xml"
   ],
   "contributes": {
-    "commands": [{
-      "command": "gnome-magic.codeAction.goToBlp",
-      "title": "gnome-magic.codeAction.goToBlp",
-      "enablement": "false"
-    }]
+    "commands": [
+      {
+        "command": "gnome-magic.codeAction.goToBlp",
+        "title": "gnome-magic.codeAction.goToBlp",
+        "enablement": "false"
+      },
+      {
+        "command": "gnome-magic.newProject",
+        "title": "Gnome Magic: New Project",
+        "enablement": "true"
+      }
+    ]
   },
   "main": "./out/extension.js",
   "scripts": {
+    "postinstall": "git submodule update",
     "vscode:prepublish": "npm run compile",
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
@@ -49,6 +57,7 @@
   },
   "dependencies": {
     "fast-xml-parser": "^4.1.2",
-    "js-beautify": "^1.14.7"
+    "js-beautify": "^1.14.7",
+    "js-convert-case": "^4.2.0"
   }
 }

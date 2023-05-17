@@ -1,13 +1,15 @@
 import * as cp from "child_process";
 import { js_beautify } from "js-beautify";
+import * as path from "path";
+import * as fs from "fs";
 
 export interface ObjectMap<T> {
   [name: string]: T;
 }
 
 export function unquote(params: string) {
-  while (params.includes('"')) params = params.replace('"', "");
-  while (params.includes("'")) params = params.replace("'", "");
+  while (params.includes('"')) {params = params.replace('"', "");}
+  while (params.includes("'")) {params = params.replace("'", "");}
   return params;
 }
 
@@ -31,7 +33,7 @@ export function getGtkTemplates(str: string): string[] {
   let m;
   let r: string[] = [];
   while ((m = regex.exec(str)) !== null) {
-    if (m.index === regex.lastIndex) regex.lastIndex++;
+    if (m.index === regex.lastIndex) {regex.lastIndex++;}
     r.push(m[1] ?? m[2]);
   }
   return r;
@@ -56,13 +58,13 @@ String.prototype.insert = function (index, string) {
   return string + this;
 };
 String.prototype.insertAfter = function (expression, str, movePointer) {
-  if (movePointer === undefined) movePointer = 0;
+  if (movePointer === undefined) {movePointer = 0;}
   let res = this.valueOf();
   let c = 0;
   let m;
 
   while ((m = expression.exec(this.valueOf())) !== null) {
-    if (m.index === expression.lastIndex) expression.lastIndex++;
+    if (m.index === expression.lastIndex) {expression.lastIndex++;}
     res = res.insert(m.index + m[0].length + movePointer - c, str);
     c += movePointer;
   }
@@ -76,3 +78,14 @@ String.prototype.jsBeautify = function (options) {
 String.prototype.lineNumberAt = function (index) {
   return this.substring(0, index).split("\n").length;
 };
+
+export async function* walk(dir: string): AsyncGenerator<string> {
+  for await (const d of await fs.promises.opendir(dir)) {
+    const entry = path.join(dir, d.name);
+    if (d.isDirectory()) {
+      yield* walk(entry);
+    } else if (d.isFile()) {
+      yield entry;
+    }
+  }
+}

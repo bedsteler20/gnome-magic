@@ -1,0 +1,17 @@
+{
+  "files.watcherExclude": {
+    "_build/**": true
+  },
+  "files.associations": {
+    "*.wrap": "ini"
+  },
+  "mesonbuild.configureOnOpen": false,
+  "mesonbuild.buildFolder": "_build",
+  "blueprint-gtk.command": "flatpak",
+  "blueprint-gtk.arguments": [
+    "build",
+    ".flatpak/repo/",
+    "python3",
+    "subprojects/blueprint-compiler/blueprint-compiler.py"
+  ]
+}

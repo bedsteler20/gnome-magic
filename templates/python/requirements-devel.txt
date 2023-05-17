@@ -1,0 +1,6 @@
+autopep8==2.0.1
+debugpy==1.6.6
+lxml==4.9.1
+PyGObject==3.42.2
+requirements-parser==0.5.0
+pygobject-stubs==2.4.0

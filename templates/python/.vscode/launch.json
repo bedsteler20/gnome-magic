@@ -1,0 +1,25 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Python: Flatpak",
+      "type": "python",
+      "request": "attach",
+      "listen": {
+        "host": "localhost",
+        "port": 5678
+      },
+      "appId": "@app_id@",
+      "pathMappings": [
+        {
+          "localRoot": "${workspaceFolder}/@snake_project@",
+          "remoteRoot": "/app/share/@kebab_project@/@snake_project@"
+        }
+      ],
+      "justMyCode": true
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+data/@app_id@.desktop.in
+data/@app_id@.appdata.xml.in
+data/@app_id@.gschema.xml
+src/main.py
+src/window.py
+src/window.ui

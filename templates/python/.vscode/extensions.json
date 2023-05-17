@@ -1,0 +1,10 @@
+{
+  "recommendations": [
+    "mesonbuild.mesonbuild",
+    "ms-python.python",
+    "nico-castell.linux-desktop-file",
+    "bodil.blueprint-gtk",
+    "bilelmoussaoui.flatpak-vscode",
+    "bedsteler20.gnome-magic"
+  ]
+}

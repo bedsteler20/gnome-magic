@@ -26,10 +26,8 @@ export class BlueprintLanguagePlugin
     const actions: vscode.Command[] = [];
     if (!range.isSingleLine) return;
     const line = document.lineAt(range.start.line).text;
-    const symbols = getBlueprintChildren(line)    
-    symbols.forEach(symbol => {
-      
-    });
+    const symbols = getBlueprintChildren(line);
+    symbols.forEach((symbol) => {});
     return actions;
   }
 
