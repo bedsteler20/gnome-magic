@@ -2,7 +2,7 @@
   "name": "gnome-magic",
   "displayName": "Gnome Magic",
   "description": "A extension that add various features to vscode to help building gnome apps",
-  "version": "0.0.2",
+  "version": "0.2.0",
   "publisher": "bedsteler20",
   "repository": {
     "url": "https://github.com/bedsteler20/gnome-magic"
@@ -55,6 +55,9 @@
     "mocha": "^10.1.0",
     "typescript": "^4.9.4"
   },
+  "extensionDependencies": [
+    "bilelmoussaoui.flatpak-vscode"
+  ],
   "dependencies": {
     "fast-xml-parser": "^4.1.2",
     "js-beautify": "^1.14.7",

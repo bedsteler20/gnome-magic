@@ -7,12 +7,17 @@ A extension that add various features to vscode to help building gnome apps
 - Link to gresource file
 - Debugging python apps in a flatpak
 - Blueprint code formatting
+- Project generator
 
 ## Requirements
 
 [Flatpak Extension](https://marketplace.visualstudio.com/items?itemName=bilelmoussaoui.flatpak-vscode)
 
 ## Release Notes
+
+### 0.2.0
+
+- Added a project template system currently only works with python
 
 ### 1.0.0
 

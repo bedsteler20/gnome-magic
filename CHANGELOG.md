@@ -1,3 +1,6 @@
+## 0.2.0
+- Added a project template system currently only works with python
+
 ## 1.0.0
 
 - Allow for disabling indexing of resources via the option `gnome-magic.indexResources`
