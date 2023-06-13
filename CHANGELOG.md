@@ -1,3 +1,7 @@
+
+### 0.2.1
+- Fixed blueprint formatter braking properties with a `-` separator
+
 ## 0.2.0
 - Added a project template system currently only works with python
 

@@ -1,7 +1,7 @@
 import * as vscode from "vscode";
 import "./helpers";
 import { getBlueprintChildren } from "./symbol_manager";
-const BLUEPRINT_DASH_ESCAPE = "$7ce02ad5_1379_4f28-99df_f6dc2bf9e534$";
+const BLUEPRINT_DASH_ESCAPE = "$7ce02ad5_1379_4f299df_f6dc2bf9e534$";
 
 export class BlueprintLanguagePlugin
   implements vscode.DocumentFormattingEditProvider, vscode.CodeActionProvider
