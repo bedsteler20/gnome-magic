@@ -59,7 +59,7 @@
     "bilelmoussaoui.flatpak-vscode"
   ],
   "dependencies": {
-    "fast-xml-parser": "^4.1.2",
+    "fast-xml-parser": "^4.2.5",
     "js-beautify": "^1.14.7",
     "js-convert-case": "^4.2.0"
   }
